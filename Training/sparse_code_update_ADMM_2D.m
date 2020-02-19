@@ -15,9 +15,9 @@ error_reg_change_thresh = 1e-7;
 error_XZnorm = inf;
 max_iter = 150;
 counter = 0;
-temp2=[];
+temp2=zeros(1,N,n3*n4);
 error_reg = [];
-Xhat_Cat=[];
+Xhat_Cat=zeros(K,N,n3*n4);
 counter_error = 1;
 %% ADMM
 while(true)

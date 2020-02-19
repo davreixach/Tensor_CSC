@@ -15,16 +15,17 @@ pars.csc.COLOR_IMAGES = 'gray';
 %% Start parpool
 poolobj = gcp('nocreate');
 if(isempty(poolobj))
-    parpool(12);
+    parpool(8);
 end
 
 %% Select data
+datasetsPath = '/home/dreixach/Modular/Datasets/CVPR20/';
+
 syntehtic_data = 0;
-dataset_number = 3;
+dataset_number = 2;
 datasets ={...
-    'City Dataset (10 images)',     '..\datasets\images\city_100_100',	'city';
-    'Fruit Dataset (10 images)',	'..\datasets\images\fruit_100_100',   'fruit'
-    'Pepper Dataset (1 images)',    '..\datasets\images\peppers',         'peppers'};
+    'City Dataset (10 images)',     [datasetsPath,'city_100_100'],	'city';
+    'Fruit Dataset (10 images)',	[datasetsPath,'fruit_100_100'],   'fruit'};
 [D,Dhat,X,Xhat,Y,Yhat,params_sizes] = load_data(datasets,dataset_number,syntehtic_data);
 n1 = params_sizes(1); n2 = params_sizes(2); n3 = params_sizes(3); n4 = params_sizes(4); N = params_sizes(5); K = params_sizes(6);
 filter_szx = 5;
