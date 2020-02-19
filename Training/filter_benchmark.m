@@ -94,9 +94,9 @@ for K = 5%K_exp
     PARAtest.K = K;
     
     t1 = tic;
-%     [~,Dhat,R_D] = tensor_trainer(Dhat,Xhat,Yhat,PARA);
+    [~,Dhat,R_D] = tensor_trainer(Dhat,Xhat,Yhat,PARA);
     td = toc(t1);    
-%     fprintf('\nDone training K: %i! --> Time: %2.2f s\n\n', K, td)
+    fprintf('\nDone training K: %i! --> Time: %2.2f s\n\n', K, td)
     
     t2 = tic;
     [~,~,R_Z] = tensor_trainer(Dhat,Xhat_test,Yhat_test,PARAtest); 
