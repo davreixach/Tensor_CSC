@@ -45,6 +45,8 @@ while(true)
         Dhat_per = fft2(D_per);
         Dhat = permute(Dhat_per,[3, 4, 1, 2]);
     else
+        D = nan;
+        Dhat = nan;
         loss2 = 0;
     end
 
