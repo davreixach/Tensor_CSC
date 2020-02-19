@@ -61,6 +61,9 @@ PARAtest = PARA;
 PARA.solveDict = true;
 PARAtest.solveDict = false;
 
+PARAtest.maxiter = 1;
+PARAtest.maxiter_x = 10;
+
 K_exp = [5,15,25,50,100,200];
 
 for K = 5%K_exp
@@ -91,9 +94,9 @@ for K = 5%K_exp
     PARAtest.K = K;
     
     t1 = tic;
-    [~,Dhat,R_D] = tensor_trainer(Dhat,Xhat,Yhat,PARA);
+%     [~,Dhat,R_D] = tensor_trainer(Dhat,Xhat,Yhat,PARA);
     td = toc(t1);    
-    fprintf('\nDone training K: %i! --> Time: %2.2f s\n\n', K, td)
+%     fprintf('\nDone training K: %i! --> Time: %2.2f s\n\n', K, td)
     
     t2 = tic;
     [~,~,R_Z] = tensor_trainer(Dhat,Xhat_test,Yhat_test,PARAtest); 

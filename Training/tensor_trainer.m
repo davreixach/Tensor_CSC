@@ -27,7 +27,7 @@ while(true)
     end
 
     %Fixing the dictionary and updating the sparse codes
-    fprintf('-----> Updateing X (Sparse Code) \n');
+    fprintf('-----> Updating X (Sparse Code) \n');
     [X,~,error_reg] = sparse_code_update_ADMM_2D(Dhat,Xhat,Yhat,n3,n4,K,N,lambda,max_iter_x);
 
     loss1 = lambda*sum(abs(X(:)));
@@ -37,7 +37,7 @@ while(true)
 
     if para.solveDict
         %Fixing the sparse code and updating the dictionary
-        fprintf('-----> Updateing D (Dictionary Learning) \n');
+        fprintf('-----> Updating D (Dictionary Learning) \n');
         [D,~,error_reg_D] = dictionary_update_ADMM_2D(Dhat,Xhat,Yhat,n1,n3,n4,K,N,filter_szx,filter_szy,max_iter_d);
 
         loss2 = error_reg_D(end);
