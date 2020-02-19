@@ -49,7 +49,7 @@ while(true)
     %% Update Uhat
     U = U + rho * (X - Z);
     %% Compute cost and errors
-    if(mod(counter,10) == 0)
+    if(mod(counter,10) == min(10,max_iter))
         X_Z_errors = reshape(X - Z,[],1);
         error_XZnorm(counter_error)  = sqrt(X_Z_errors'*X_Z_errors);
         for image_train=1:N

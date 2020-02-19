@@ -12,7 +12,8 @@ dbstop if error
 
 rng('default')
 
-cd([project,'/Tensor_CSC'])
+% cd([project,'/Tensor_CSC'])
+cd ../Tensor_CSC/Training/
 
 %% Start parpool
 poolobj = gcp('nocreate');

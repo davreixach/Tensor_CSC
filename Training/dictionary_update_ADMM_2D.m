@@ -44,7 +44,7 @@ while(true)
     %% Update Ghat
     Ghat = Ghat + rho * (Dhat - That);
     %% Compute cost and errors
-    if(mod(counter,10) == 0)
+    if(mod(counter,min(10,max_iter)) == 0)
         D_T_errors = reshape(Dhat - That,[],1);
         error_DTnorm(counter)  = sqrt(D_T_errors'*D_T_errors);
         for image_train=1:N
