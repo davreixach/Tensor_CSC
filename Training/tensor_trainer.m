@@ -8,6 +8,8 @@ K = para.K;
 N = para.N;
 lambda = para.lambda;
 max_iter = para.maxiter;
+max_iter_x = para.maxiter_x;
+max_iter_d = para.maxiter_d;
 filter_szx = para.filter_szx;
 filter_szy = para.filter_szy;
 
@@ -26,7 +28,7 @@ while(true)
 
     %Fixing the dictionary and updating the sparse codes
     fprintf('-----> Updateing X (Sparse Code) \n');
-    [X,~,error_reg] = sparse_code_update_ADMM_2D(Dhat,Xhat,Yhat,n3,n4,K,N,lambda);
+    [X,~,error_reg] = sparse_code_update_ADMM_2D(Dhat,Xhat,Yhat,n3,n4,K,N,lambda,max_iter_x);
 
     loss1 = lambda*sum(abs(X(:)));
     X_per = permute(X,[3, 4, 1, 2]);
@@ -36,7 +38,7 @@ while(true)
     if para.solveDict
         %Fixing the sparse code and updating the dictionary
         fprintf('-----> Updateing D (Dictionary Learning) \n');
-        [D,~,error_reg_D] = dictionary_update_ADMM_2D(Dhat,Xhat,Yhat,n1,n3,n4,K,N,filter_szx,filter_szy);
+        [D,~,error_reg_D] = dictionary_update_ADMM_2D(Dhat,Xhat,Yhat,n1,n3,n4,K,N,filter_szx,filter_szy,max_iter_d);
 
         loss2 = error_reg_D(end);
         D_per = permute(D,[3, 4, 1, 2]);

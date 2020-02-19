@@ -1,4 +1,4 @@
-function [D,error_DTnorm,error_reg] = dictionary_update_ADMM_2D(Dhat,Xhat,Yhat,n1,n3,n4,K,N,filter_szx,filter_szy)
+function [D,error_DTnorm,error_reg] = dictionary_update_ADMM_2D(Dhat,Xhat,Yhat,n1,n3,n4,K,N,filter_szx,filter_szy,maxiter)
 That = Dhat;
 Ghat = That;
 %% ADMM updates parameters init
@@ -8,7 +8,11 @@ rho_max = 600;
 error_DTnorm_thresh = 1e-7;
 error_reg_change_thresh = 1e-7;
 error_DTnorm = inf;
-max_iter = 10;%150;
+if nargin > 10
+    max_iter = maxiter;
+else
+    max_iter = 10;%150;
+end
 counter = 0;
 temp2=[];
 error_reg = [];

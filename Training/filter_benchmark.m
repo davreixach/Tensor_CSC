@@ -49,6 +49,8 @@ resTraining = [];
 resTesting = [];
 
 PARA.maxiter = 10;
+PARA.maxiter_x = 1;
+PARA.maxiter_d = 1;
 PARA.lambda = 1;
 
 PARA.filter_szx = 11;
@@ -60,7 +62,7 @@ PARAtest.solveDict = false;
 
 K_exp = [5,15,25,50,100,200];
 
-for K = K_exp
+for K = 5%K_exp
     [D,Dhat,X,Xhat,Y,Yhat,params_sizes] = load_data2(b,K);
     [~,~,X_test,Xhat_test,Y_test,Yhat_test,params_sizes_test] = load_data2(btest,K);
 

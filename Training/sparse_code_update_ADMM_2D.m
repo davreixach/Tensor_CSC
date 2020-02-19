@@ -1,4 +1,4 @@
-function [X,error_XZnorm,error_reg] = sparse_code_update_ADMM_2D(Dhat,Xhat,Yhat,n3,n4,K,N,lambda)
+function [X,error_XZnorm,error_reg] = sparse_code_update_ADMM_2D(Dhat,Xhat,Yhat,n3,n4,K,N,lambda,maxiter)
 Xhat_per = permute(Xhat,[3,4, 1, 2]);
 X_per = real(ifft2(Xhat_per))*sqrt(n3*n4);
 X = permute(X_per,[3,4, 1, 2]);
@@ -13,7 +13,11 @@ rho_max = 600;
 error_XZnorm_thresh = 1e-7;
 error_reg_change_thresh = 1e-7;
 error_XZnorm = inf;
-max_iter = 10;%150;
+if nargin > 8
+    max_iter = maxiter;
+else
+    max_iter = 10;%150;
+end
 counter = 0;
 temp2=zeros(1,N,n3*n4);
 error_reg = [];
