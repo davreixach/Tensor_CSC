@@ -15,20 +15,32 @@ pars.csc.COLOR_IMAGES = 'gray';
 %% Start parpool
 poolobj = gcp('nocreate');
 if(isempty(poolobj))
+<<<<<<< HEAD
     parpool(4);
 end
 
 %% Select data
 
 datasetsPath = '/home/david/Modular/Datasets/CVPR20/';
+=======
+    parpool(8);
+end
+
+%% Select data
+datasetsPath = '/home/dreixach/Modular/Datasets/CVPR20/';
+>>>>>>> 640ca57c90ce83e0c3dd2defd7cb27804a18b487
 
 syntehtic_data = 0;
 dataset_number = 2;
 datasets ={...
     'City Dataset (10 images)',     [datasetsPath,'city_100_100'],	'city';
+<<<<<<< HEAD
     'Fruit Dataset (10 images)',	[datasetsPath,'fruit_100_100'],   'fruit'
 %     'Pepper Dataset (1 images)',    '..\datasets\images\peppers',         'peppers'
     };
+=======
+    'Fruit Dataset (10 images)',	[datasetsPath,'fruit_100_100'],   'fruit'};
+>>>>>>> 640ca57c90ce83e0c3dd2defd7cb27804a18b487
 [D,Dhat,X,Xhat,Y,Yhat,params_sizes] = load_data(datasets,dataset_number,syntehtic_data);
 n1 = params_sizes(1); n2 = params_sizes(2); n3 = params_sizes(3); n4 = params_sizes(4); N = params_sizes(5); K = params_sizes(6);
 filter_szx = 5;

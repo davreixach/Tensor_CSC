@@ -22,7 +22,7 @@ if(syntehtic_data == 1)
 else
     CONTRAST_NORMALIZE = 'local_cn';
     ZERO_MEAN = 1;
-    COLOR_IMAGES = 'rgb';
+    COLOR_IMAGES = 'gray';
     [b] = CreateImages(datasets{dataset_number,2},CONTRAST_NORMALIZE,ZERO_MEAN,COLOR_IMAGES);
     I = b; K = 100;  [n3,n4,n1,N] = size(I);     n2 = 1;
     

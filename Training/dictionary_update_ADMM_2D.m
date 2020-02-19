@@ -8,12 +8,16 @@ rho_max = 600;
 error_DTnorm_thresh = 1e-7;
 error_reg_change_thresh = 1e-7;
 error_DTnorm = inf;
-max_iter = 150;
+max_iter = 10;%150;
 counter = 0;
 temp2=[];
 error_reg = [];
 Dhat_Cat = [];
 counter_error = 1;
+
+temp2=zeros(1,N,n3*n4);
+% Xhat_Cat=zeros(K,N,n3*n4);
+
 %% ADMM
 while(true)
     counter = counter + 1;
