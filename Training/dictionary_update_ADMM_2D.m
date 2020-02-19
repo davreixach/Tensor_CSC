@@ -29,7 +29,8 @@ while(true)
         break;
     end
     %% Update Dhat
-    parfor comb_iind=1:(n3*n4)
+%     parfor comb_iind=1:(n3*n4)
+    for comb_iind=1:(n3*n4)
         rhs = (Yhat(:,:,comb_iind)*Xhat(:,:,comb_iind)' + rho*That(:,:,comb_iind) - Ghat(:,:,comb_iind));
         if(N==1)
             Dhat_Cat(:,:,comb_iind) = sherman_morrison_inv(rhs,Xhat(:,:,comb_iind),rho);
@@ -48,7 +49,8 @@ while(true)
         D_T_errors = reshape(Dhat - That,[],1);
         error_DTnorm(counter)  = sqrt(D_T_errors'*D_T_errors);
         for image_train=1:N
-            parfor comb_ind_kw=1:(n3*n4)
+%             parfor comb_ind_kw=1:(n3*n4)
+            for comb_ind_kw=1:(n3*n4)
                 temp2(:,image_train,comb_ind_kw) = (Yhat(:,image_train,comb_ind_kw) - Dhat(:,:,comb_ind_kw)*Xhat(:,image_train,comb_ind_kw));
             end
         end

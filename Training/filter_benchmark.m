@@ -116,7 +116,7 @@ end
 
 dataPath = [project,'/data/'];
 
-save2([dataPath,name,'TrainResults.mat'],'resTrain','dataset','-noappend')
-save2([dataPath,name,'TestResults.mat'],'resTest','dataset','-noappend')
+save2([dataPath,name,'TrainResults.mat'],'resTrain','dataset')
+save2([dataPath,name,'TestResults.mat'],'resTest','dataset')
 
 dbclear all

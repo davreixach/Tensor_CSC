@@ -53,7 +53,8 @@ while(true)
         X_Z_errors = reshape(X - Z,[],1);
         error_XZnorm(counter_error)  = sqrt(X_Z_errors'*X_Z_errors);
         for image_train=1:N
-            parfor comb_ind_kw=1:(n3*n4)
+%             parfor comb_ind_kw=1:(n3*n4)
+            for comb_ind_kw=1:(n3*n4)
                 temp2(:,image_train,comb_ind_kw) = (Yhat(:,image_train,comb_ind_kw) - Dhat(:,:,comb_ind_kw)*Xhat(:,image_train,comb_ind_kw));
             end
         end
