@@ -34,7 +34,8 @@ while(true)
     U_per = permute(U,[3, 4, 1, 2]); Uhat_per = fft2(U_per)/sqrt(n3*n4); Uhat = permute(Uhat_per,[3, 4, 1, 2]);
     %% Update Xhat in the Foureir Domain
     for image_train=1:N
-        parfor comb_ind=1:(n3*n4)
+%         parfor comb_ind=1:(n3*n4)
+        for comb_ind=1:(n3*n4)
             rhs = (Dhat(:,:,comb_ind)'*Yhat(:,image_train,comb_ind) + rho*Zhat(:,image_train,comb_ind) - Uhat(:,image_train,comb_ind));
             [Xhat_Cat(:,image_train,comb_ind),cg_flag,~,pcg_iter] = pcg(@afun_Xhat,rhs,pcg_tol,[],[],[],Xhat(:,image_train,comb_ind),Dhat(:,:,comb_ind),rho);
         end

@@ -16,10 +16,10 @@ rng('default')
 cd ../Tensor_CSC/Training/
 
 %% Start parpool
-poolobj = gcp('nocreate');
-if(isempty(poolobj))
-    parpool(8);
-end
+% poolobj = gcp('nocreate');
+% if(isempty(poolobj))
+%     parpool(8);
+% end
 
 %% Select data
 % datasetsPath = '/home/david/Modular/Datasets/CVPR20/';
@@ -49,7 +49,7 @@ load2(dataTest,'S','btest')
 resTraining = [];
 resTesting = [];
 
-PARA.maxiter = 10;
+PARA.maxiter = 60;
 PARA.maxiter_x = 1;
 PARA.maxiter_d = 1;
 PARA.lambda = 1;
@@ -62,11 +62,11 @@ PARA.solveDict = true;
 PARAtest.solveDict = false;
 
 PARAtest.maxiter = 1;
-PARAtest.maxiter_x = 10;
+PARAtest.maxiter_x = 60;
 
 K_exp = [5,15,25,50,100,200];
 
-for K = 5%K_exp
+for K = K_exp
     [D,Dhat,X,Xhat,Y,Yhat,params_sizes] = load_data2(b,K);
     [~,~,X_test,Xhat_test,Y_test,Yhat_test,params_sizes_test] = load_data2(btest,K);
 
