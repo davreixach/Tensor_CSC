@@ -16,10 +16,10 @@ rng('default')
 cd ../Tensor_CSC/Training/
 
 %% Start parpool
-% poolobj = gcp('nocreate');
-% if(isempty(poolobj))
-%     parpool(8);
-% end
+poolobj = gcp('nocreate');
+if(isempty(poolobj))
+    parpool(8);
+end
 
 %% Select data
 % datasetsPath = '/home/david/Modular/Datasets/CVPR20/';
@@ -56,9 +56,9 @@ cellTest = iscell(btest);
 resTraining = [];
 resTesting = [];
 
-PARA.maxiter = 30;
-PARA.maxiter_x = 10;
-PARA.maxiter_d = 10;
+PARA.maxiter = 10;
+PARA.maxiter_x = 60;
+PARA.maxiter_d = 60;
 PARA.lambda = 1;
 
 PARA.filter_szx = 11;
