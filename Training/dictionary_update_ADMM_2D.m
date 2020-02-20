@@ -86,6 +86,6 @@ end
 Dhat_per = permute(Dhat,[3,4, 1, 2]);
 D_per = real(ifft2(Dhat_per));
 D = permute(D_per,[3,4, 1, 2]);
-fprintf('+ Updateing D (Dictionary Learning): took %d iterations. \n',counter);
+fprintf('+ Updating D (Dictionary Learning): took %d iterations. \n',counter);
 end
 

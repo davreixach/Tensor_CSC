@@ -17,7 +17,7 @@ filter_szy = para.filter_szy;
 
 error_obj = zeros(1,max_iter);
 counter = 0;
-error_obj_change_thresh = 1e-8;
+error_obj_change_thresh = 1e-3;
 
 %% Fixed point optimization
 while(true)
@@ -30,7 +30,8 @@ while(true)
     fprintf('-----> Updating X (Sparse Code) \n');
     [X,~,error_reg] = sparse_code_update_ADMM_2D(Dhat,Xhat,Yhat,n3,n4,K,N,lambda,max_iter_x);
 
-    loss1 = lambda*sum(abs(X(:)));
+%     loss1 = lambda*sum(abs(X(:)));
+    loss1 = lambda*sum(nnz(X));
     X_per = permute(X,[3, 4, 1, 2]);
     Xhat_per = fft2(X_per);
     Xhat = permute(Xhat_per,[3, 4, 1, 2]);
@@ -62,15 +63,16 @@ while(true)
     fprintf('----------------------------------------------------------------------------- \n');
 
     if(counter > 2)
-        if(error_obj_change < error_obj_change_thresh)
+        if(error_obj_change/error_obj(end) < error_obj_change_thresh)
             break;
         end
     end
 end
 
-n_total = numel(X);
+% n_total = numel(X);
+n_total = n3*n4*N;
 results.NNZ = nnz(X);
 results.CR = n_total/results.NNZ;
-results.PSNR = 20*log10(sqrt(n_total))-20*log10(error_reg); % assuming error_reg equals l2
+results.PSNR = 20*log10(sqrt(n_total))-20*log10(error_reg(end)); % assuming error_reg equals l2
 
 end

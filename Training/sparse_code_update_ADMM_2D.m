@@ -90,7 +90,7 @@ end
 Xhat_per = permute(Xhat,[3,4, 1, 2]);
 X_per = real(ifft2(Xhat_per));
 X = permute(X_per,[3,4, 1, 2]);
-fprintf('+ Updateing X (Sparse Code): took %d iterations. \n',counter);
+fprintf('+ Updating X (Sparse Code): took %d iterations. \n',counter);
 return;
 %% functions for variable update
 function [res] = afun_Xhat(Xhat,Dhat,rho)

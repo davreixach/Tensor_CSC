@@ -25,33 +25,40 @@ cd ../Tensor_CSC/Training/
 % datasetsPath = '/home/david/Modular/Datasets/CVPR20/';
 datasetsPath = '/home/dreixach/Modular/Datasets/CVPR20/';
 
-exp = 2;
+exp = 1;
 
-nameCell = {'01_city_TCSC_';
-            '01_fruit_TCSC_'};
+nameCell = {'02_city_TCSC_';
+            '02_fruit_TCSC_';
+            '02_caltech_city_TCSC_';
+            '02_caltech_fruit_TCSC_'};
 
-dataCell = {[datasetsPath,'city.mat'];
-        [datasetsPath,'fruit.mat'];
-        [datasetsPath,'city_fruit_testing.mat']};
+dataTrainCell = {[datasetsPath,'city.mat'];
+            [datasetsPath,'fruit.mat'];
+            [datasetsPath,'city.mat'];
+            [datasetsPath,'fruit.mat']};
+    
+dataTestCell = {[datasetsPath,'city_fruit_testing.mat'];
+            [datasetsPath,'city_fruit_testing.mat'];
+            [datasetsPath,'caltech_testing.mat'];
+            [datasetsPath,'caltech_testing.mat']};
 
-data = dataCell{exp};
 name = nameCell{exp};
-dataTest = dataCell{3};
+data = dataTrainCell{exp};
+dataTest = dataTestCell{exp};
 
 load2(data,'S','b')
 load2(dataTest,'S','btest')
 
 %% run
 
-% b = squeeze(b);
-% btest = squeeze(btest);
+cellTest = iscell(btest);
 
 resTraining = [];
 resTesting = [];
 
-PARA.maxiter = 60;
-PARA.maxiter_x = 1;
-PARA.maxiter_d = 1;
+PARA.maxiter = 30;
+PARA.maxiter_x = 10;
+PARA.maxiter_d = 10;
 PARA.lambda = 1;
 
 PARA.filter_szx = 11;
@@ -66,9 +73,9 @@ PARAtest.maxiter_x = 60;
 
 K_exp = [5,15,25,50,100,200];
 
-for K = K_exp
+for K = 100;%K_exp
     [D,Dhat,X,Xhat,Y,Yhat,params_sizes] = load_data2(b,K);
-    [~,~,X_test,Xhat_test,Y_test,Yhat_test,params_sizes_test] = load_data2(btest,K);
+%     [~,~,X_test,Xhat_test,Y_test,Yhat_test,params_sizes_test] = load_data2(btest,K);
 
 
     PARA.n1 = params_sizes(1);
@@ -76,12 +83,6 @@ for K = K_exp
     PARA.n3 = params_sizes(3);
     PARA.n4 = params_sizes(4);
     PARA.N = params_sizes(5);
-
-    PARAtest.n1 = params_sizes_test(1);
-    PARAtest.n2 = params_sizes_test(2);
-    PARAtest.n3 = params_sizes_test(3);
-    PARAtest.n4 = params_sizes_test(4);
-    PARAtest.N = params_sizes_test(5);
 
 % run experiment
 % 
@@ -99,7 +100,44 @@ for K = K_exp
     fprintf('\nDone training K: %i! --> Time: %2.2f s\n\n', K, td)
     
     t2 = tic;
-    [~,~,R_Z] = tensor_trainer(Dhat,Xhat_test,Yhat_test,PARAtest); 
+    if cellTest
+        R_Z.NNZ_i = [];
+        R_Z.CR_i = [];
+        R_Z.PSNR_i = [];
+        for i = 1:length(btest)
+            [~,~,X_test,Xhat_test,Y_test,Yhat_test,params_sizes_test] = load_data2(reshape(btest{i},[size(btest{i}),1,1]),K);
+
+            PARAtest.n1 = params_sizes_test(1);
+            PARAtest.n2 = params_sizes_test(2);
+            PARAtest.n3 = params_sizes_test(3);
+            PARAtest.n4 = params_sizes_test(4);
+            PARAtest.N = params_sizes_test(5);
+            
+            % Reshape dictionary
+            D = ifft2(permute(Dhat,[3,4,2,1]),PARA.filter_szx,PARA.filter_szy);
+            Dhat = permute(fft2(D,PARAtest.n3,PARAtest.n4),[4,3,1,2]);
+            
+            ti0 = tic;
+            [~,~,R_Z_i] = tensor_trainer(Dhat,Xhat_test,Yhat_test,PARAtest);
+            
+            R_Z.NNZ_i = [R_Z.NNZ_i R_Z_i.NNZ];
+            R_Z.CR_i = [R_Z.CR_i R_Z_i.CR];
+            R_Z.PSNR_i = [R_Z.PSNR_i R_Z_i.PSNR];
+            
+            ti = toc(ti0);
+            fprintf('\nDone testing signal: %i/%i! --> Time: %2.2f s, PSNR: %.2f, CR: %.2f\n\n\n',i,length(btest), ti,R_Z_i.PSNR,R_Z_i.CR)
+        end
+        
+        R_Z.NNZ = sum(R_Z.NNZ_i);
+        R_Z.CR = mean(R_Z.CR_i);
+        R_Z.PSNR = mean(R_Z.PSNR_i);
+        
+    else
+        [~,~,X_test,Xhat_test,Y_test,Yhat_test,params_sizes_test] = load_data2(btest,K);
+        [~,~,R_Z] = tensor_trainer(Dhat,Xhat_test,Yhat_test,PARAtest);
+    end
+    
+    
     tc = toc(t2);    
     fprintf('\nDone testing K: %i! --> Time: %2.2f s, PSNR: %.2f, CR: %.2f\n\n\n', K, tc,R_Z.PSNR,R_Z.CR)
     
@@ -116,7 +154,14 @@ end
 
 dataPath = [project,'/data/'];
 
-save2([dataPath,name,'TrainResults.mat'],'resTrain','dataset')
-save2([dataPath,name,'TestResults.mat'],'resTest','dataset')
+try
+    save2([dataPath,name,'TrainResults.mat'],'resTraining')
+    save2([dataPath,name,'TestResults.mat'],'resTesting')
+catch ME
+    if strcmp(ME.identifier,'MATLAB:save:couldNotWriteFile')
+        save2([dataPath,name,'TrainResults.mat'],'resTraining','resTraining','-noappend')
+        save2([dataPath,name,'TestResults.mat'],'resTesting','resTraining','-noappend')
+    end
+end
 
 dbclear all
